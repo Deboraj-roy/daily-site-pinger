@@ -21,15 +21,15 @@ jobs:
           node-version: '20'
 
       - name: Install Dependencies
-        run: npm install node-fetch@3
+        run: npm install
 
       - name: Run Hit Script
         run: node hitav.js
 
-      - name: Push to Main Repo
-        uses: ad-m/github-push-action@v0.6.0
+      - name: Push Report to Main Repo
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          repository: debsite-automation/daily-site-dashboard
+          commit_message: "Update daily report"
           branch: main
-          force: true
-          directory: .
+          repository: your-username/daily-site-dashboard
+          file_pattern: index.html
