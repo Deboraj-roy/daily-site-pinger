@@ -1,0 +1,35 @@
+name: Daily Site Ping
+
+permissions:
+  contents: write
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # 8 AM BD
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Dev Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install node-fetch@3
+
+      - name: Run Hit Script
+        run: node hitav.js
+
+      - name: Push to Main Repo
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          repository: debsite-automation/daily-site-dashboard
+          branch: main
+          force: true
+          directory: .

@@ -1,0 +1,38 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background: #1e90ff;
+  color: white;
+  text-align: center;
+  padding: 1em 0;
+}
+table {
+  width: 90%;
+  margin: 2em auto;
+  border-collapse: collapse;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+th, td {
+  padding: 0.8em;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+th {
+  background: #007acc;
+  color: white;
+}
+tr:nth-child(even) {
+  background: #f9f9f9;
+}
+a {
+  color: #1e90ff;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}

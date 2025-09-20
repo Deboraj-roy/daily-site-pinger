@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Daily Site Status Report</title>
+</head>
+<body>
+  <header>
+    <h1>Daily Site Status Report</h1>
+    <p id="last-checked">Last checked: --</p>
+  </header>
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>URL</th>
+          <th>Status</th>
+          <th>Success</th>
+        </tr>
+      </thead>
+      <tbody id="status-table">
+        <!-- Dynamic rows injected here -->
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    async function loadStatus() {
+      const res = await fetch('sites.json'); // or KV-provided endpoint
+      const data = await res.json();
+      document.getElementById('last-checked').textContent = "Last checked: " + data.time;
+
+      const tbody = document.getElementById('status-table');
+      tbody.innerHTML = '';
+      data.results.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><a href="${r.url}" target="_blank">${r.url}</a></td>
+          <td>${r.status}</td>
+          <td>${r.ok ? '✅' : '❌'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+    loadStatus();
+  </script>
+</body>
+</html>
