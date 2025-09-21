@@ -1,0 +1,7 @@
+body { font-family: Arial, sans-serif; margin: 20px; }
+h1 { text-align: center; color: #007acc; }
+table { width: 95%; margin: auto; border-collapse: collapse; }
+th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+th { background: #007acc; color: #fff; }
+tr:nth-child(even) { background: #f9f9f9; }
+a { color: #007acc; text-decoration: none; }
