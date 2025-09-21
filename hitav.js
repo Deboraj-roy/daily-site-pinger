@@ -1,10 +1,10 @@
-import fs from 'fs';
-import fetch from 'node-fetch';
-import sites from './sites.json' assert { type: "json" };
+import fs from "fs";
+import fetch from "node-fetch";
+import sites from "./sites.json" assert { type: "json" };
 
 async function pingSite(url) {
   try {
-    const res = await fetch(url, { method: 'GET' });
+    const res = await fetch(url, { method: "GET" });
     return { url, status: res.status, ok: res.ok };
   } catch (err) {
     return { url, status: 0, ok: false, error: err.message };
@@ -19,32 +19,57 @@ async function main() {
   }
 
   const html = generateHTML(results);
-  fs.writeFileSync('index.html', html, 'utf-8');
+  fs.writeFileSync("index.html", html, "utf-8");
 }
 
 function generateHTML(results) {
-  const rows = results.map(r => `
+  const rows = results
+    .map(
+      (r) => `
     <tr>
       <td><a href="${r.url}" target="_blank">${r.url}</a></td>
       <td>${r.status}</td>
-      <td>${r.ok ? '✅' : '❌'}</td>
-    </tr>
-  `).join('\n');
+      <td>${r.ok ? "✅" : "❌"}</td>
+    </tr>`
+    )
+    .join("\n");
 
-  return `
-<!DOCTYPE html>
+  const lastChecked = new Date().toISOString(); // UTC timestamp
+
+  return `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Daily Site Status Report</title>
   <link rel="stylesheet" href="style.css">
+  <script defer src="localtime.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 80%; margin: 0 auto; border-collapse: collapse; }
+    th, td { padding: 8px 12px; border: 1px solid #ddd; text-align: center; }
+    th { background-color: #f4f4f4; }
+    h1 { text-align: center; }
+  </style>
 </head>
 <body>
   <h1>Daily Site Status Report</h1>
-  <p style="text-align:center;">Last checked: ${new Date().toLocaleString()}</p>
+  <p style="text-align:center;">
+    Last checked: 
+    <span id="last-checked" data-utc="${lastChecked}">
+      ${lastChecked} (UTC)
+    </span>
+  </p>
   <table>
-    <thead><tr><th>URL</th><th>Status</th><th>Success</th></tr></thead>
-    <tbody>${rows}</tbody>
+    <thead>
+      <tr>
+        <th>Site</th>
+        <th>Status Code</th>
+        <th>OK</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${rows}
+    </tbody>
   </table>
 </body>
 </html>`;
