@@ -44,10 +44,10 @@ function generateHTML(results) {
   <title>Daily Site Status Report</title>
   <link rel="stylesheet" href="style.css">
   <script defer src="localtime.js"></script>
-  <style>
+   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     table { width: 90%; margin: 0 auto; border-collapse: collapse; }
-    th, td { padding: 8px 12px; border: 1px solid #140303; text-align: center; }
+    th, td { padding: 8px 12px; border: 1px solid #140303; }
     th { background-color: #6d5e08; color: white; }
   </style>
 </head>
