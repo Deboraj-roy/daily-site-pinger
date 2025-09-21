@@ -36,8 +36,8 @@ jobs:
       # 5. Push changes to main branch manually
       - name: Push updated files to main
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
+          git config --global user.name "Deboraj-roy"
+          git config --global user.email "deborajroy123@gmail.com"
           git add index.html style.css
           git commit -m "Update site status (manual/push run)" || echo "No changes to commit"
           git push origin HEAD:main
