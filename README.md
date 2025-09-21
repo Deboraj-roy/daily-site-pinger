@@ -1,87 +1,92 @@
 # 📡 Daily Site Pinger
 
-A GitHub Actions–powered workflow that **pings websites daily** and generates a live dashboard with their HTTP status.
-This helps keep free-hosted sites (e.g., `.runasp.net`, `.netlify.app`, `.github.io`) awake and ensures you always know if they’re online.
+A **GitHub Actions–powered workflow** that automatically checks the status of your websites and generates a live dashboard. Perfect for keeping free-hosted sites (like `.runasp.net`, `.netlify.app`, `.github.io`) awake and monitoring uptime.
 
 ---
 
 ## 🚀 Features
 
-* ⏰ **Automatic Daily Check** (via cron at 10 AM BD / 4 AM UTC)
-* 🖱️ **Manual Run** from the GitHub Actions tab
-* 🔄 **On Push Run** when `dev` branch is updated
+* ⏰ **Automatic Daily Check** via cron at **10 AM BD / 4 AM UTC**
+* 🖱️ **Manual Run** directly from the GitHub Actions tab
+* 🔄 **On Push Run** whenever the **main branch** is updated
 * 📊 **Dashboard Report** served via **GitHub Pages (main branch)**
-* ✅ Status table with **URL, HTTP Code, Last Checked Timestamp**
-* 🎨 Simple, responsive HTML + CSS
+* ✅ Tracks **URL, HTTP Code, Last Checked Timestamp**
+* 🎨 Simple, responsive **HTML + CSS** dashboard
+* ⚡ **Robust workflow** — handles missing `reports/` folder and only commits when there are changes
 
 ---
 
 ## 🗂️ Repository Structure
 
 ```
+
 daily-site-pinger/
 │
 ├─ (branch: main)        # GitHub Pages serves this branch
 │   ├─ index.html         # Auto-generated dashboard
-│   ├─ style.css          # Styles for dashboard
-│   └─ reports/           # Historical reports (optional)
+│   ├─ style.css          # Dashboard styling
+│   └─ reports/           # Historical reports (optional; workflow handles missing folder)
 │
 ├─ (branch: dev)          # Workflow + scripts live here
 │   ├─ sites.json         # List of URLs to ping
-│   ├─ hitav.js           # Node.js script that checks sites
+│   ├─ hitav.js           # Node.js site checker
 │   ├─ package.json       # Node.js dependencies
 │   └─ .github/
 │       └─ workflows/
 │           ├─ ping.yml           # Daily cron workflow
 │           └─ manual-or-push.yml # Manual & push-trigger workflow
-```
+
+````
 
 ---
 
 ## ⚙️ Setup Instructions
 
-1. **Fork or Clone this repo**
+1. **Clone or Fork this repository**
 
-   ```bash
-   git clone https://github.com/your-username/daily-site-pinger.git
-   ```
+```bash
+git clone https://github.com/your-username/daily-site-pinger.git
+````
 
-2. **Create 2 branches**
+2. **Create two branches**
 
-   * `main` → holds the dashboard
-   * `dev` → holds scripts + workflows
+* `main` → holds the live dashboard
+* `dev` → holds scripts + workflows
 
-   ```bash
-   git checkout -b dev
-   git push origin dev
-   ```
+```bash
+git checkout -b dev
+git push origin dev
+```
 
 3. **Enable GitHub Pages**
 
-   * Go to **Settings → Pages**
-   * Source = `main` branch → `/ (root)`
-   * Save
+* Go to **Settings → Pages**
+* Set **Source = main branch → / (root)**
+* Save
 
-   Your live dashboard will be available at:
+Your live dashboard will be available at:
 
-   ```
-   https://<your-username>.github.io/daily-site-pinger/
-   ```
+```
+https://<your-username>.github.io/daily-site-pinger/
+```
 
 4. **Add your site list** in `sites.json` (in `dev` branch). Example:
 
-   ```json
-   [
-     "https://bookstoredeb.runasp.net/",
-     "https://librarydeb.netlify.app/",
-     "http://mangoweb.runasp.net/"
-   ]
-   ```
+```json
+[
+  "https://bookstoredeb.runasp.net/",
+  "https://librarydeb.netlify.app/",
+  "http://mangoweb.runasp.net/"
+]
+```
 
-5. **Workflows** will handle the rest:
+5. **Workflows** handle the rest:
 
-   * `ping.yml` → runs **daily at 10 AM BD (4 AM UTC)**
-   * `manual-or-push.yml` → runs when you update `dev` branch or manually trigger it
+* `ping.yml` → runs **daily at 10 AM BD (4 AM UTC)**
+* `manual-or-push.yml` → runs on **main branch push** or **manual trigger**
+
+  * Handles missing `reports/` folder gracefully
+  * Commits only if there are actual updates
 
 ---
 
@@ -94,31 +99,34 @@ daily-site-pinger/
 
 ---
 
-## 🛠️ Tech Used
+## 🛠️ Tech Stack
 
-* **GitHub Actions** for automation
-* **Node.js (hitav.js)** for site checks
-* **Markdown/HTML/CSS** for reporting
-* **GitHub Pages** for hosting
+* **GitHub Actions** – automation & workflow
+* **Node.js (hitav.js)** – site status checker
+* **HTML/CSS** – dashboard reporting
+* **GitHub Pages** – hosting live dashboard
 
 ---
 
-## 📌 Tips
+## 📌 Tips & Notes
 
-* To change run time → edit cron in `.github/workflows/ping.yml`
-* To manually run → go to **Actions tab → Select Workflow → Run Workflow**
-* Make sure your workflow has:
+* To **change the run time** → edit cron in `.github/workflows/ping.yml`
+* To **manually trigger** → go to **Actions tab → Select Workflow → Run Workflow**
+* Ensure workflow permissions:
 
-  ```yaml
-  permissions:
-    contents: write
-  ```
+```yaml
+permissions:
+  contents: write
+```
 
-  so it can push updates to `main` branch.
+so it can push updates to the `main` branch.
+
+* Empty `reports/` folder is handled automatically, no errors occur.
 
 ---
 
 ## 📄 License
 
-MIT License – free to use and modify.
+MIT License – free to use, modify, and share.
+ 
  
