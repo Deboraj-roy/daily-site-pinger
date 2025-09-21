@@ -6,38 +6,33 @@ permissions:
 on:
   push:
     branches:
-      - dev
+      - main
   workflow_dispatch:
 
 jobs:
-  run-on-update:
+  ping-sites:
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout dev branch
-      - name: Checkout dev branch
+      - name: Checkout main branch
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      # 3. Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 4. Run the site check script
       - name: Run site check script
         run: node hitav.js
 
-      # 5. Push changes to main branch manually
-      - name: Push updated files to main
+      - name: Commit updated dashboard
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-          git add index.html style.css
+          git config --global user.name "Deboraj-roy"
+          git config --global user.email "deborajroy123@gmail.com"
+          git add index.html style.css reports/
           git commit -m "Update site status (manual/push run)" || echo "No changes to commit"
-          git push origin HEAD:main
+          git push origin main
