@@ -1,0 +1,37 @@
+name: Manual or Push Trigger
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  run-on-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dev branch
+        uses: actions/checkout@v3
+        with:
+          ref: dev
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run site check script
+        run: node hitav.js
+
+      - name: Commit report to main branch
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update site status (manual/push run)"
+          branch: main
+          file_pattern: index.html style.css
