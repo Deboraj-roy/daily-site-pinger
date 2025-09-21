@@ -13,26 +13,40 @@ jobs:
   ping-sites:
     runs-on: ubuntu-latest
     steps:
+      # 1️⃣ Checkout the repo
       - name: Checkout main branch
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
+      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # 4️⃣ Run your site check script
       - name: Run site check script
         run: node hitav.js
 
+      # 5️⃣ Commit updated files safely
       - name: Commit updated dashboard
         run: |
           git config --global user.name "Deboraj-roy"
           git config --global user.email "deborajroy123@gmail.com"
-          git add index.html style.css reports/
-          git commit -m "Update site status (manual/push run)" || echo "No changes to commit"
+          
+          # Add main files
+          git add index.html style.css
+          
+          # Add reports folder only if it exists
+          [ -d reports ] && git add reports/
+          
+          # Only commit if there are changes
+          git diff-index --quiet HEAD || git commit -m "Update site status (manual/push run)"
+          
+          # Push changes
           git push origin main
