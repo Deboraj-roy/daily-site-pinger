@@ -5,31 +5,33 @@ permissions:
 
 on:
   schedule:
-    - cron: '0 2 * * *' # 8 AM BD
-  workflow_dispatch:
+    - cron: '0 2 * * *' # 08 AM BD (UTC+6)
+  workflow_dispatch:   # also allow manual trigger
 
 jobs:
-  build-and-deploy:
+  ping-sites:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Dev Repo
+      - name: Checkout main branch
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install
 
-      - name: Run Hit Script
+      - name: Run site check script
         run: node hitav.js
 
-      - name: Push Report to Main Repo
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Update daily report"
-          branch: main
-          repository: your-username/daily-site-dashboard
-          file_pattern: index.html
+      - name: Commit updated dashboard
+        run: |
+          git config --global user.name "Deboraj-roy"
+          git config --global user.email "deborajroy123@gmail.com"
+          git add index.html style.css reports/
+          git commit -m "Update daily site status" || echo "No changes to commit"
+          git push origin main
