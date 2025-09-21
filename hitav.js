@@ -25,8 +25,9 @@ async function main() {
 function generateHTML(results) {
   const rows = results
     .map(
-      (r) => `
+      (r, i) => `
     <tr>
+      <td>${i + 1}</td>
       <td><a href="${r.url}" target="_blank">${r.url}</a></td>
       <td>${r.status}</td>
       <td>${r.ok ? "✅" : "❌"}</td>
@@ -44,15 +45,14 @@ function generateHTML(results) {
   <link rel="stylesheet" href="style.css">
   <script defer src="localtime.js"></script>
   <style>
-   body { font-family: Arial, sans-serif; margin: 20px; }
-    table { width: 80%; margin: 0 auto; border-collapse: collapse; }
-    th, td { padding: 8px 12px; border: 1px solid #140303;}
-    th { background-color: #6d5e08; }
-    /* h1 { text-align: center; } */
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 90%; margin: 0 auto; border-collapse: collapse; }
+    th, td { padding: 8px 12px; border: 1px solid #140303; text-align: center; }
+    th { background-color: #6d5e08; color: white; }
   </style>
 </head>
 <body>
-  <h1>Daily Site Status Report</h1>
+  <h1 style="text-align:center;">Daily Site Status Report</h1>
   <p style="text-align:center;">
     Last checked: 
     <span id="last-checked" data-utc="${lastChecked}">
@@ -62,6 +62,7 @@ function generateHTML(results) {
   <table>
     <thead>
       <tr>
+        <th>SL</th>
         <th>Site</th>
         <th>Status Code</th>
         <th>OK</th>

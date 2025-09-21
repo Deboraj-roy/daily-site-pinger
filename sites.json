@@ -1,6 +1,7 @@
 [
   "https://orange-cherry-fa56.mrouf7353.workers.dev/",
   "https://deboraj-roy.github.io/Library-Management-System-SinglePage/login",
+  "http://deblmsapi.runasp.net/api/Library/Login?email=ovishak03%40gmail.com&password=admin1999",
   "https://bookstoredeb.runasp.net/",
   "http://eticket.runasp.net/",
   "http://movie-store.runasp.net/",
@@ -25,5 +26,6 @@
   "http://deblmsapi.runasp.net/index.html",
   "http://mangogatewaysolution.runasp.net/",
   "http://mangoshoppingcart.runasp.net/index.html",
-  "http://mangoreward.runasp.net"
+  "http://mangoreward.runasp.net",
+  "http://mangoreward.runasp.net/index.html"
 ]
