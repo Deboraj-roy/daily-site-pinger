@@ -44,11 +44,11 @@ function generateHTML(results) {
   <link rel="stylesheet" href="style.css">
   <script defer src="localtime.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
+   body { font-family: Arial, sans-serif; margin: 20px; }
     table { width: 80%; margin: 0 auto; border-collapse: collapse; }
-    th, td { padding: 8px 12px; border: 1px solid #ddd; text-align: center; }
-    th { background-color: #f4f4f4; }
-    h1 { text-align: center; }
+    th, td { padding: 8px 12px; border: 1px solid #140303;}
+    th { background-color: #6d5e08; }
+    /* h1 { text-align: center; } */
   </style>
 </head>
 <body>
