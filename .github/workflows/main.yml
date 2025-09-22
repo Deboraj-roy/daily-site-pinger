@@ -27,15 +27,22 @@ jobs:
 
       - name: Run site check script
         run: node hitav.js
-
+        
+      # Commit updated files safely
       - name: Commit updated dashboard
         run: |
           git config --global user.name "Deboraj-roy"
           git config --global user.email "deborajroy123@gmail.com"
-      
-          git add index.html style.css reports/ || true
+
+          # Add main files
+          git add index.html style.css
+
+          # Add reports folder only if it exists
+          [ -d reports ] && git add reports/
+
+          # Commit only if there are changes
           if ! git diff --cached --quiet; then
-            git commit -m "Update daily site status"
+            git commit -m "Update site status (Auto/push run)"
             git push origin main
           else
             echo "No changes to commit"
