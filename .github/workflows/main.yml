@@ -32,6 +32,11 @@ jobs:
         run: |
           git config --global user.name "Deboraj-roy"
           git config --global user.email "deborajroy123@gmail.com"
-          git add index.html style.css reports/
-          git commit -m "Update daily site status" || echo "No changes to commit"
-          git push origin main
+      
+          git add index.html style.css reports/ || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Update daily site status"
+            git push origin main
+          else
+            echo "No changes to commit"
+          fi
