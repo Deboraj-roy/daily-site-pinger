@@ -5,7 +5,8 @@ permissions:
 
 on:
   schedule:
-  - cron: '*/10 * * * *'  # every 10 minutes
+  - cron: '0 2 * * *' # 08 AM BD (UTC+6)
+  #- cron: '*/10 * * * *'  # every 10 minutes
   workflow_dispatch:   # also allow manual trigger
 
 jobs:
@@ -27,7 +28,7 @@ jobs:
 
       - name: Run site check script
         run: node hitav.js
-        
+
       # Commit updated files safely
       - name: Commit updated dashboard
         run: |

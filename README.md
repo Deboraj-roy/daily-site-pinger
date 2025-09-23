@@ -6,7 +6,7 @@ A **GitHub Actions–powered workflow** that automatically checks the status of 
 
 ## 🚀 Features
 
-* ⏰ **Automatic Daily Check** via cron at **10 AM BD / 4 AM UTC**
+* ⏰ **Automatic Daily Check** via cron at **08 AM BD / 2 AM UTC**
 * 🖱️ **Manual Run** directly from the GitHub Actions tab
 * 🔄 **On Push Run** whenever the **main branch** is updated
 * 📊 **Dashboard Report** served via **GitHub Pages (main branch)**
