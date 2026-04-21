@@ -5,46 +5,69 @@ permissions:
 
 on:
   schedule:
-  - cron: '0 2 * * *' # 08 AM BD (UTC+6)
-  #- cron: '*/10 * * * *'  # every 10 minutes
-  workflow_dispatch:   # also allow manual trigger
+    - cron: '0 2 * * *'   # 08 AM BD (UTC+6)
+  workflow_dispatch:       # manual trigger for testing
 
 jobs:
   ping-sites:
     runs-on: ubuntu-latest
+    # Prevent concurrent runs (important for scheduled + manual overlap)
+    concurrency:
+      group: site-ping
+      cancel-in-progress: false  # Don't cancel running jobs; queue them
+    
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          persist-credentials: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci  # Use npm ci instead of npm install
 
-      - name: Run site check script
-        run: node hitav.js
+      - name: Run site check script with retry
+        id: site_check
+        continue-on-error: true
+        run: |
+          # Retry up to 3 times with 30s delay between attempts
+          for i in 1 2 3; do
+            echo "Attempt $i/3"
+            node hitav.js && break || sleep 30
+          done
 
-      # Commit updated files safely
       - name: Commit updated dashboard
         run: |
           git config --global user.name "Deboraj-roy"
           git config --global user.email "deborajroy123@gmail.com"
-
-          # Add main files
-          git add index.html style.css
-
-          # Add reports folder only if it exists
-          [ -d reports ] && git add reports/
-
-          # Commit only if there are changes
+          
+          # Pull latest changes before committing (avoid conflicts)
+          git pull origin main --rebase || true
+          
+          # Stage files safely
+          git add index.html style.css 2>/dev/null || true
+          
+          if [ -d reports ] && [ "$(ls -A reports 2>/dev/null)" ]; then
+            git add reports/
+          fi
+          
+          # Commit and push only if changes exist
           if ! git diff --cached --quiet; then
-            git commit -m "Update site status (Auto/push run)"
+            git commit -m "Update site status (scheduled: $(date -u +'%Y-%m-%d'))"
             git push origin main
           else
-            echo "No changes to commit"
+            echo "✅ No changes to commit"
           fi
+
+      - name: Alert on persistent failure (optional)
+        if: steps.site_check.outcome == 'failure'
+        run: |
+          echo "⚠️ WARNING: hitav.js failed after 3 retries"
+          # You could add a webhook to Discord/Slack/Email here
+          # Example: curl -X POST ${{ secrets.SLACK_WEBHOOK }} -d '{"text":"Site check failed"}'
