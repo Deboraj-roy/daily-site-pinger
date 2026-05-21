@@ -23,11 +23,15 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          # Remove or comment out the cache line:
+          # cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm install  # Use npm install instead of npm ci
 
       - name: Install dependencies
         run: npm ci  # Use npm ci instead of npm install
